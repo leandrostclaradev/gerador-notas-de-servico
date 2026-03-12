@@ -14,13 +14,26 @@ const C = {
   branco:  '#ffffff',
 }
 
+const EMPRESA_PRESETS = {
+  cidadeSatelite: {
+    nomeEmpresa: 'Pão de queijo Mania (Cidade Satélite)',
+    cnpjCliente: '88.888.888/8888-88',
+    responsavelCliente: 'Responsável Pão de queijo Mania (Cidade Satélite)',
+  },
+  cinturaoVerde: {
+    nomeEmpresa: 'Pão de queijo Mania (Cinturão Verde)',
+    cnpjCliente: '99.999.999/9999-99',
+    responsavelCliente: 'Responsável Pão de queijo Mania (Cinturão Verde)',
+  },
+}
+
 // ── Estado inicial do formulário ───────────────────────────────
 const estadoInicial = {
   numeroNota:              '001',
-  nomePrestadora:          '',
-  cpfCnpjPrestadora:       '',
-  telefonePrestadora:      '',
-  emailPrestadora:         '',
+  nomePrestadora:          'Amanda Gomes Wanderley',
+  cpfCnpjPrestadora:       '788.090.292-91',
+  telefonePrestadora:      '(95) 99153-8664',
+  emailPrestadora:         'mandiwanderley@gmail.com',
   nomeEmpresa:             '',
   cnpjCliente:             '',
   responsavelCliente:      '',
@@ -31,7 +44,7 @@ const estadoInicial = {
   pagamentoTransferencia:  false,
   pagamentoOutro:          false,
   outroDescricao:          '',
-  chavePix:                '',
+  chavePix:                'mandiwanderley@gmail.com',
   dataVencimento:          '',
   observacoes:             '',
 }
@@ -114,6 +127,7 @@ export default function App() {
   const [erros, setErros]     = useState({})
   const [toast, setToast]     = useState(null)
   const [isMobile, setIsMobile] = useState(() => window.innerWidth <= 768)
+  const [empresaSelecionada, setEmpresaSelecionada] = useState('')
 
   useEffect(() => {
     const onResize = () => setIsMobile(window.innerWidth <= 768)
@@ -130,6 +144,23 @@ export default function App() {
 
   // Atualiza checkbox
   const setCheck = key => e => setForm(f => ({ ...f, [key]: e.target.checked }))
+
+  const setEmpresaPreset = (e) => {
+    const presetKey = e.target.value
+    setEmpresaSelecionada(presetKey)
+
+    if (!presetKey || !EMPRESA_PRESETS[presetKey]) {
+      return
+    }
+
+    const preset = EMPRESA_PRESETS[presetKey]
+    setForm((f) => ({
+      ...f,
+      nomeEmpresa: preset.nomeEmpresa,
+      cnpjCliente: formatCnpj(preset.cnpjCliente),
+      responsavelCliente: preset.responsavelCliente,
+    }))
+  }
 
   // Exibe toast temporário
   const mostrarToast = (msg, tipo = 'sucesso') => {
@@ -327,7 +358,7 @@ export default function App() {
         }}>
           <div>
             {secaoHeader('Prestadora de Serviço:')}
-            {campo('Nome *', 'nomePrestadora', 'Seu nome completo')}
+            {campo('Nome *', 'nomePrestadora', 'Seu nome completo', 'Amanda Gomes Wanderley')}
             <div style={{ marginBottom: 10 }}>
               <label style={labelCss}>CPF/CNPJ *</label>
               <input
@@ -357,6 +388,18 @@ export default function App() {
           </div>
           <div>
             {secaoHeader('Cliente / Empresa:')}
+            <div style={{ marginBottom: 10 }}>
+              <label style={labelCss}>Empresa cadastrada</label>
+              <select
+                value={empresaSelecionada}
+                onChange={setEmpresaPreset}
+                style={inputCss('nomeEmpresa')}
+              >
+                <option value="">Selecione uma empresa</option>
+                <option value="cidadeSatelite">{EMPRESA_PRESETS.cidadeSatelite.nomeEmpresa}</option>
+                <option value="cinturaoVerde">{EMPRESA_PRESETS.cinturaoVerde.nomeEmpresa}</option>
+              </select>
+            </div>
             {campo('Nome da Empresa *', 'nomeEmpresa', 'Nome da empresa')}
             <div style={{ marginBottom: 10 }}>
               <label style={labelCss}>CNPJ</label>
@@ -398,7 +441,7 @@ export default function App() {
             gap: 12,
           }}>
             <span style={{ fontSize: 13, color: C.texto }}>
-              Gestão de redes sociais(Social Media)
+              Gestão de redes sociais (Social Media)
             </span>
             <div style={{
               display: 'flex',

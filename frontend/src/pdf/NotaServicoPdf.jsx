@@ -146,6 +146,33 @@ const styles = StyleSheet.create({
     flexWrap: 'wrap',
     gap: 16,
     marginBottom: 8,
+    alignItems: 'center',
+  },
+  paymentOption: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    gap: 6,
+  },
+  paymentCheckbox: {
+    width: 11,
+    height: 11,
+    border: `1 solid ${colors.navy}`,
+    borderRadius: 2,
+    alignItems: 'center',
+    justifyContent: 'center',
+    backgroundColor: colors.branco,
+  },
+  paymentCheckboxChecked: {
+    backgroundColor: colors.branco,
+    borderColor: colors.navy,
+  },
+  paymentCheckboxMark: {
+    width: 6,
+    height: 3,
+    borderLeft: `1.5 solid ${colors.navy}`,
+    borderBottom: `1.5 solid ${colors.navy}`,
+    transform: 'rotate(-45deg)',
+    marginTop: -1,
   },
   paymentText: {
     fontSize: 9,
@@ -179,8 +206,6 @@ const displayValue = (value, fallback = ' ') => {
 
   return value
 }
-
-const checkbox = (checked) => (checked ? '[X]' : '[ ]')
 
 export function NotaServicoPdfDocument({ dados }) {
   return (
@@ -256,11 +281,12 @@ export function NotaServicoPdfDocument({ dados }) {
 
           <Text style={[styles.fieldLabel, { marginTop: 4 }]}>Forma de pagamento</Text>
           <View style={styles.paymentRow}>
-            <Text style={styles.paymentText}>{checkbox(dados.pagamentoPix)} PIX</Text>
-            <Text style={styles.paymentText}>{checkbox(dados.pagamentoTransferencia)} Transferencia</Text>
-            <Text style={styles.paymentText}>
-              {checkbox(dados.pagamentoOutro)} Outro: {displayValue(dados.outroDescricao, '_______________')}
-            </Text>
+            <PaymentOption checked={dados.pagamentoPix} label="PIX" />
+            <PaymentOption checked={dados.pagamentoTransferencia} label="Transferencia" />
+            <PaymentOption
+              checked={dados.pagamentoOutro}
+              label={`Outro: ${displayValue(dados.outroDescricao, '_______________')}`}
+            />
           </View>
 
           <View style={styles.twoCols}>
@@ -293,6 +319,17 @@ export function NotaServicoPdfDocument({ dados }) {
         </View>
       </Page>
     </Document>
+  )
+}
+
+function PaymentOption({ checked, label }) {
+  return (
+    <View style={styles.paymentOption}>
+      <View style={[styles.paymentCheckbox, checked && styles.paymentCheckboxChecked]}>
+        {checked ? <View style={styles.paymentCheckboxMark} /> : null}
+      </View>
+      <Text style={styles.paymentText}>{label}</Text>
+    </View>
   )
 }
 
