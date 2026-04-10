@@ -17,13 +17,13 @@ const C = {
 const EMPRESA_PRESETS = {
   cidadeSatelite: {
     nomeEmpresa: 'Pão de queijo Mania (Cidade Satélite)',
-    cnpjCliente: '88.888.888/8888-88',
-    responsavelCliente: 'Responsável Pão de queijo Mania (Cidade Satélite)',
+    cnpjCliente: '09.021.332.0003-/99',
+    responsavelCliente: 'ELINE RODRIGUES QUEIROZ - LTDA',
   },
   cinturaoVerde: {
     nomeEmpresa: 'Pão de queijo Mania (Cinturão Verde)',
-    cnpjCliente: '99.999.999/9999-99',
-    responsavelCliente: 'Responsável Pão de queijo Mania (Cinturão Verde)',
+    cnpjCliente: '42.100.203/0001-08',
+    responsavelCliente: 'O FINHESTAG LTDA.',
   },
 }
 
@@ -192,7 +192,7 @@ export default function App() {
         dataVencimento: formatDateToApi(form.dataVencimento),
         localData: localDataAtual,
       }
-      const nomeArquivo = `nota-servico-${form.numeroNota.padStart(3, '0')}.pdf`
+      const nomeArquivo = `Nota de Serviço ${form.numeroNota.padStart(3, '0')} - ${form.nomeEmpresa}.pdf`
       await gerarNotaServicoPdf(payload, nomeArquivo)
       mostrarToast('✓ PDF gerado e baixado com sucesso!')
     } catch (err) {
