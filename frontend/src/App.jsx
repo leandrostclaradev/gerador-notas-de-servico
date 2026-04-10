@@ -25,6 +25,11 @@ const EMPRESA_PRESETS = {
     cnpjCliente: '42.100.203/0001-08',
     responsavelCliente: 'O FINHESTAG LTDA.',
   },
+  default: {
+    nomeEmpresa: '',
+    cnpjCliente: '',
+    responsavelCliente: '',
+  }
 }
 
 // ── Estado inicial do formulário ───────────────────────────────
@@ -395,7 +400,7 @@ export default function App() {
                 onChange={setEmpresaPreset}
                 style={inputCss('nomeEmpresa')}
               >
-                <option value="">Selecione uma empresa</option>
+                <option value="default">Selecione uma empresa</option>
                 <option value="cidadeSatelite">{EMPRESA_PRESETS.cidadeSatelite.nomeEmpresa}</option>
                 <option value="cinturaoVerde">{EMPRESA_PRESETS.cinturaoVerde.nomeEmpresa}</option>
               </select>
